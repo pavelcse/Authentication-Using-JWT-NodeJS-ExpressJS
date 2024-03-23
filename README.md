@@ -1,4 +1,4 @@
-# Project Name: NodeJS with MongoDB
+# Project Name: Authentication - NodeJS, ExpressJS, MongoDB, Mongoose and JWT
 
 A simple CRUD operation using mongoose.
 
