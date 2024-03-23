@@ -45,3 +45,31 @@ All todo routes
 4. [GET]http://localhost:3000/todo
 5. [PUT]http://localhost:3000/todo/65fdc11df3c530054d2d6577
 6. [DELETE]http://localhost:3000/todo/65fdc11df3c530054d2d6577
+
+## USER
+
+To create user
+
+```json
+{
+  "name": "Pavel Parvej",
+  "usersame": "pavelcse",
+  "password": "1234",
+  "status": "active"
+}
+```
+
+To login
+
+```json
+{
+  "username": "pavelcse",
+  "password": "1234"
+}
+```
+
+All user routes
+
+1. [POST]http://localhost:3000/user/signup
+2. [POST]http://localhost:3000/user/login
+3. [GET]http://localhost:3000/user

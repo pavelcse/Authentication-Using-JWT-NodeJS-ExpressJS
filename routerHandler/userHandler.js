@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userSchema = require("../schemas/userSchemas");
+const verifyLogin = require("../middlewares/verifyLogin");
 
 const User = new mongoose.model("User", userSchema);
 
@@ -75,69 +76,13 @@ router.post("/login", async (req, res) => {
 });
 
 // get all the users
-router.get("/", async (req, res) => {
+router.get("/", verifyLogin, async (req, res) => {
   try {
+    const user = await User.find();
     res.status(200).json({
       success: true,
       message: "",
-      data: "",
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: "There was an server side error!",
-    });
-  }
-});
-
-// get single user by id
-router.get("/:id", async (req, res) => {
-  try {
-    res.status(200).json({
-      success: true,
-      message: "",
-      data: "",
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: "There was an server side error!",
-    });
-  }
-});
-
-// Edit user
-router.put("/:id", async (req, res) => {
-  try {
-    const data = await User.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: req.body },
-      { new: true }
-    );
-    res.status(200).json({
-      success: true,
-      message: "User was updated successfully.",
-      data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: "There was an server side error!",
-    });
-  }
-});
-
-// delete user
-router.delete("/:id", async (req, res) => {
-  try {
-    let data = await User.findByIdAndDelete(req.params.id).select({
-      name: 0,
-      username: 0,
-      status: 0,
-      password: 0,
-      date: 0,
-    });
-    res.status(200).json({
-      success: true,
-      message: "User was deleted successfully",
-      data,
+      data: user,
     });
   } catch (error) {
     res.status(500).json({

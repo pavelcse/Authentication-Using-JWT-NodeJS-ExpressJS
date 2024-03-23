@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const todoHandler = require("./routerHandler/todoHandler");
 const userHandler = require("./routerHandler/userHandler");
+const verifyLogin = require("./middlewares/verifyLogin");
 
 const app = express();
 dotenv.config();
@@ -15,7 +16,7 @@ mongoose
   .catch((e) => console.log(e));
 
 // application routes
-app.use("/todo", todoHandler);
+app.use("/todo", verifyLogin, todoHandler);
 app.use("/user", userHandler);
 
 app.get("/", (req, res) => {
@@ -28,6 +29,8 @@ const errorHandler = (err, req, res, next) => {
   }
   res.status(500).json({ error: err });
 };
+
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log(`App listining at port 3000`);
