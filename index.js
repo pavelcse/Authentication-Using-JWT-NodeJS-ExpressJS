@@ -1,8 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const todoHandler = require("./routerHandler/todoHandler");
+const userHandler = require("./routerHandler/userHandler");
 
 const app = express();
+dotenv.config();
 app.use(express.json());
 
 // database connection with mongoose
@@ -13,6 +16,8 @@ mongoose
 
 // application routes
 app.use("/todo", todoHandler);
+app.use("/user", userHandler);
+
 app.get("/", (req, res) => {
   res.send("Hello Pavel");
 });
