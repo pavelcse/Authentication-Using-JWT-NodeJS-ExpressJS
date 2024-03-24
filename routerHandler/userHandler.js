@@ -78,7 +78,7 @@ router.post("/login", async (req, res) => {
 // get all the users
 router.get("/", verifyLogin, async (req, res) => {
   try {
-    const user = await User.find();
+    const user = await User.find().populate("todos");
     res.status(200).json({
       success: true,
       message: "",

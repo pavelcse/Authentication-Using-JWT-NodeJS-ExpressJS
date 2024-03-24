@@ -2,15 +2,18 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const todoSchema = require("../schemas/todoSchemas");
+const userSchema = require("../schemas/userSchemas");
 
 const Todo = new mongoose.model("Todo", todoSchema);
+const User = new mongoose.model("User", userSchema);
 
 // get all the todos
 router.get("/", async (req, res) => {
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find().populate("user", "name username -_id"); // pouplate(): second perameter optional, "-_id" means skip id also
     res.status(200).json({
       success: true,
+      message: "Get all the todos",
       data: todos,
     });
   } catch (error) {
@@ -86,9 +89,21 @@ router.get("/:id", async (req, res) => {
 
 // post todo
 router.post("/", async (req, res) => {
-  const newTodo = new Todo(req.body);
+  const newTodo = new Todo({
+    ...req.body,
+    user: req.userId,
+  });
+
   try {
-    await newTodo.save();
+    const todo = await newTodo.save();
+    await User.findOneAndUpdate(
+      { _id: req.userId },
+      {
+        $push: {
+          todos: todo._id,
+        },
+      }
+    );
     res.status(200).json({
       message: "Todo was inserted successfully.",
     });

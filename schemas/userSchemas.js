@@ -18,6 +18,12 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: ["active", "inactive"],
     },
+    todos: [
+      {
+        type: mongoose.Schema.Types.ObjectID,
+        ref: "Todo",
+      },
+    ],
   },
   {
     timestamps: true,
